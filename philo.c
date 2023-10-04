@@ -51,49 +51,68 @@ int	ft_atoi(const char *str)
 	return (num * sig);
 }
 
-void init_struct(t_philo *philo)
+void init_struct(t_args *args)
 {
-	philo->number_of_philosophers = 0;
-	philo->time_to_die = 0;
-	philo->time_to_eat = 0;
-	philo->time_to_sleep = 0;
-	philo->must_eat = 0;
+	args->n_philos = 0;
+	args->time_to_die = 0;
+	args->time_to_eat = 0;
+	args->time_to_sleep = 0;
+	args->must_eat = 0;
+	args->n_meals_eaten = 0;
 }
-void parse_args(int argc, char **argv, t_philo *philo)
+
+void parse_args(int argc, char **argv, t_args *args)
 {
-	if(argc == 5)
+
+	args->n_philos = ft_atoi(argv[1]);
+	args->time_to_die = ft_atoi(argv[2]);
+	args->time_to_eat = ft_atoi(argv[3]);
+	args->time_to_sleep = ft_atoi(argv[4]);
+	args->end_game = false;
+	if(argc == 6)
 	{
-		philo->number_of_philosophers = ft_atoi(argv[1]);
-		philo->time_to_die = ft_atoi(argv[2]);
-		philo->time_to_eat = ft_atoi(argv[3]);
-		philo->time_to_sleep = ft_atoi(argv[4]);
+		args->must_eat = ft_atoi(argv[5]);
+		if (args->must_eat <= 0)
+		{
+			printf("Invalid arguments\n");
+			exit(0);
+		}
 	}
-	else if(argc == 6)
+	if (argc < 5 || args->n_philos <= 0 || args->time_to_die <= 0 \
+		|| args->time_to_sleep <= 0 || args->time_to_eat <= 0)
 	{
-		philo->number_of_philosophers = ft_atoi(argv[1]);
-		philo->time_to_die = ft_atoi(argv[2]);
-		philo->time_to_eat = ft_atoi(argv[3]);
-		philo->time_to_sleep = ft_atoi(argv[4]);
-		philo->must_eat = ft_atoi(argv[5]);
+		printf("Invalid arguments\n");
+		exit(0);
 	}
 }
 
 int main(int argc, char **argv)
 {
-	t_philo philo;
+	t_args args;
+	t_philo *philos;
 
-	// if(argc < 4)
-	// {
-	// 	perror("Philo: missing argument");
-	// 	exit(0);
-	// }
-	init_struct(&philo);
+	init_struct(&args);
 	printf("ARGSSSSS%d\n", argc);
-    parse_args(argc, argv, &philo);
-	printf("fILOSOFOS:%d\n", philo.number_of_philosophers);
-	printf("T_MUERTE:%d\n", philo.time_to_die);
-	printf("T_COMER:%d\n", philo.time_to_eat);
-	printf("T_DORMIR:%d\n", philo.time_to_sleep);
-	printf("T_DEBE_COMER:%d\n", philo.must_eat);
+    parse_args(argc, argv, &args);
+	philos = malloc(sizeof(t_philo) * args.n_philos);
+	if (!philos)
+		return (0);
+
+
+
+
+
+	init_forks(&args);
+	init_philos_and_mutexes(philos, &args);
+
+
+
+
+	
+	printf("fILOSOFOS:%d\n", args.n_philos);
+	printf("T_MUERTE:%lld\n", args.time_to_die);
+	printf("T_COMER:%lld\n", args.time_to_eat);
+	printf("T_DORMIR:%lld\n", args.time_to_sleep);
+	printf("T_DEBE_COMER:%d\n", args.must_eat);
 
 }

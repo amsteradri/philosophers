@@ -12,7 +12,7 @@
 
 NAME			= philo
 
-SRCS			= philo.c
+SRCS			= philo.c forks.c
 
 OBJS			= $(SRCS:.c=.o)
 
