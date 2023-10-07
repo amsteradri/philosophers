@@ -12,13 +12,13 @@
 
 NAME			= philo
 
-SRCS			= philo.c forks.c
+SRCS			= philo.c forks.c eat_sleep_think.c
 
 OBJS			= $(SRCS:.c=.o)
 
 CC				= gcc
 
-CFLAGS			= -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS			= -Wall -Wextra -Werror -pthread
 
 all: $(NAME)
 

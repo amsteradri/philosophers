@@ -57,7 +57,7 @@ void init_struct(t_args *args)
 	args->time_to_die = 0;
 	args->time_to_eat = 0;
 	args->time_to_sleep = 0;
-	args->must_eat = 0;
+	args->n_meals = 0;
 	args->n_meals_eaten = 0;
 }
 
@@ -71,8 +71,8 @@ void parse_args(int argc, char **argv, t_args *args)
 	args->end_game = false;
 	if(argc == 6)
 	{
-		args->must_eat = ft_atoi(argv[5]);
-		if (args->must_eat <= 0)
+		args->n_meals = ft_atoi(argv[5]);
+		if (args->n_meals <= 0)
 		{
 			printf("Invalid arguments\n");
 			exit(0);
@@ -92,27 +92,20 @@ int main(int argc, char **argv)
 	t_philo *philos;
 
 	init_struct(&args);
-	printf("ARGSSSSS%d\n", argc);
+	//printf("ARGSSSSS%d\n", argc);
     parse_args(argc, argv, &args);
 	philos = malloc(sizeof(t_philo) * args.n_philos);
 	if (!philos)
 		return (0);
-
-
-
-
-
 	init_forks(&args);
 	init_philos_and_mutexes(philos, &args);
-
-
-
-
-	
-	printf("fILOSOFOS:%d\n", args.n_philos);
-	printf("T_MUERTE:%lld\n", args.time_to_die);
-	printf("T_COMER:%lld\n", args.time_to_eat);
-	printf("T_DORMIR:%lld\n", args.time_to_sleep);
-	printf("T_DEBE_COMER:%d\n", args.must_eat);
+	wait_threads(philos);
+	free_destroy_end(philos, &args);
+	return(0);
+	// printf("fILOSOFOS:%d\n", args.n_philos);
+	// printf("T_MUERTE:%lld\n", args.time_to_die);
+	// printf("T_COMER:%lld\n", args.time_to_eat);
+	// printf("T_DORMIR:%lld\n", args.time_to_sleep);
+	// printf("T_DEBE_COMER:%d\n", args.n_meals);
 
 }

@@ -72,10 +72,10 @@ void	init_philos_and_mutexes(t_philo *philos, t_args *args)
 
 void	log_message(t_philo *philo, char *str)
 {
-	if (philo->args->stop_sim)
+	if (philo->args->end_game)
 		return ;
 	pthread_mutex_lock(&philo->args->lock_print);
-	printf("%lld %d %s", get_time(), philo->id, str);
+	printf("%lld philo[%d] %s", get_time(), philo->id, str);
 	pthread_mutex_unlock(&philo->args->lock_print);
 }
 
@@ -105,14 +105,14 @@ void	*check_meals(void *args)
 	t_philo	*philo;
 
 	philo = (t_philo *)args;
-	while (!philo->args->stop_sim)
+	while (!philo->args->end_game)
 	{
 		if (philo->args->n_meals > 0 && (philo->args->n_meals_eaten >= \
 		(philo->args->n_meals * philo->args->n_philos)))
 		{
 			pthread_join(philo->meals_check, NULL);
 			pthread_mutex_lock(&philo->args->lock_meals_stop);
-			philo->args->stop_sim = true;
+			philo->args->end_game = true;
 			pthread_mutex_unlock(&philo->args->lock_meals_stop);
 			return (NULL);
 		}
@@ -136,9 +136,43 @@ void	*routine(void *args)
 			log_message(philo, "has taken a fork\n");
 			return (NULL);
 		}
-		take_forks(philo);
+		forks(philo);
 		eat(philo);
-		sleep_and_think(philo);
+		sleep_think(philo);
 	}
 	return (NULL);
+}
+
+void	wait_threads(t_philo *philos)
+{
+	int	i;
+
+	i = 0;
+	while (i < philos->args->n_philos)
+	{
+		pthread_join(philos->threads[i], NULL);
+		pthread_join(philos[i].death_check, NULL);
+		pthread_join(philos[i].meals_check, NULL);
+		i++;
+	}
+}
+
+void	free_destroy_end(t_philo *philos, t_args *args)
+{
+	int	i;
+
+	i = 0;
+	while (i < philos->args->n_philos)
+	{
+		pthread_mutex_destroy(&args->forks[i]);
+		i++;
+	}
+	pthread_mutex_destroy(&args->lock_last_meal_time);
+	pthread_mutex_destroy(&args->lock_print);
+	pthread_mutex_destroy(&args->lock_meals_stop);
+	pthread_mutex_destroy(&args->lock_death);
+	pthread_mutex_destroy(&args->lock_meals_eaten);
+	free(philos->threads);
+	free(philos);
+	free(args->forks);
 }

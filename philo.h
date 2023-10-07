@@ -26,7 +26,7 @@
 typedef struct s_args
 {
     int n_philos;
-    int must_eat;
+    int n_meals;
     int n_meals_eaten;
 
     long long time_to_die;
@@ -56,7 +56,20 @@ typedef struct s_philo
 	t_args				*args;
 }	t_philo;
 
+
+int	ft_atoi(const char *str);
+void init_struct(t_args *args);
+void parse_args(int argc, char **argv, t_args *args);
 void	init_philos_and_mutexes(t_philo *philos, t_args *args);
 void init_forks(t_args *args);
-
+long long	get_time(void);
+void	log_message(t_philo *philo, char *str);
+void	*check_death(void *args);
+void	*check_meals(void *args);
+void	*routine(void *args);
+void forks(t_philo *philo);
+void eat(t_philo *philo);
+void	sleep_think(t_philo *philo);
+void	wait_threads(t_philo *philos);
+void	free_destroy_end(t_philo *philos, t_args *args);
 #endif
