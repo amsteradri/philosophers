@@ -6,7 +6,7 @@
 /*   By: adgutier <adgutier@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 10:52:51 by adgutier          #+#    #+#             */
-/*   Updated: 2023/12/21 15:56:04 by adgutier         ###   ########.fr       */
+/*   Updated: 2023/12/21 16:02:55 by adgutier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@ void forks(t_philo *philo)
 {
     if (philo->id % 2 == 1)
     {
-        tempo(philo, 0);
         pthread_mutex_lock(philo->right_fork);
         log_message(philo, "has taken a fork\n");
         if (pthread_mutex_trylock(philo->left_fork) != 0)
@@ -23,20 +22,17 @@ void forks(t_philo *philo)
             pthread_mutex_unlock(philo->right_fork);
             return;
         }
-        tempo(philo, 0);
         log_message(philo, "has taken a fork\n");
     }
     else
     {
         pthread_mutex_lock(philo->left_fork);
-        tempo(philo, 0);
         log_message(philo, "has taken a fork\n");
         if (pthread_mutex_trylock(philo->right_fork) != 0)
         {
             pthread_mutex_unlock(philo->left_fork);
             return;
         }
-        tempo(philo, 0);
         log_message(philo, "has taken a fork\n");
     }
 }

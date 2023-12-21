@@ -6,7 +6,7 @@
 /*   By: adgutier <adgutier@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:48:58 by adgutier          #+#    #+#             */
-/*   Updated: 2023/12/21 15:52:18 by adgutier         ###   ########.fr       */
+/*   Updated: 2023/12/21 16:03:43 by adgutier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,13 +111,12 @@ void	*check_death(void *args)
 		{
 			pthread_join(philo->death_check, NULL);
 			pthread_mutex_lock(&philo->args->lock_death);
+			log_message(philo, "is dead\n");
 			philo->args->end_game = true;
 			pthread_mutex_unlock(&philo->args->lock_death);
-			usleep(300);
-			log_message(philo, "is dead\n");
 			return (NULL);
 		}
-		
+		tempo(philo, 2);
 	}
 	return (NULL);
 }
@@ -139,6 +138,7 @@ void	*check_meals(void *args)
             philo->args->end_game = true;
             pthread_mutex_unlock(&philo->args->lock_meals_stop);
         }
+        tempo(philo, 2);
     }
     return (NULL);
 }
@@ -165,8 +165,14 @@ void	*routine(void *args)
         forks(philo); // Intenta tomar los tenedores
         eat(philo);   // Come si logró tomar los tenedores
         sleep_think(philo); // Duerme y piensa
-		usleep(1100);
     }
+
+    pthread_join(philo->death_check, NULL);
+    if (philo->args->n_meals > 0)
+    {
+        pthread_join(philo->meals_check, NULL);
+    }
+
     return (NULL);
 }
 
