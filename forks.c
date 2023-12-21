@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   froks.c                                            :+:      :+:    :+:   */
+/*   forks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adgutier <adgutier@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:48:58 by adgutier          #+#    #+#             */
-/*   Updated: 2023/10/04 16:48:58 by adgutier         ###   ########.fr       */
+/*   Updated: 2023/12/21 13:14:44 by adgutier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,53 +95,66 @@ void	*check_death(void *args)
 			pthread_mutex_unlock(&philo->args->lock_death);
 			return (NULL);
 		}
-		usleep(50);
+		usleep(1000);
 	}
 	return (NULL);
 }
+
+
 
 void	*check_meals(void *args)
 {
-	t_philo	*philo;
+    t_philo	*philo = (t_philo *)args;
+    while (!philo->args->end_game)
+    {
+        pthread_mutex_lock(&philo->args->lock_meals_eaten);
+        int total_meals = philo->args->n_meals_eaten;
+        pthread_mutex_unlock(&philo->args->lock_meals_eaten);
 
-	philo = (t_philo *)args;
-	while (!philo->args->end_game)
-	{
-		if (philo->args->n_meals > 0 && (philo->args->n_meals_eaten >= \
-		(philo->args->n_meals * philo->args->n_philos)))
-		{
-			pthread_join(philo->meals_check, NULL);
-			pthread_mutex_lock(&philo->args->lock_meals_stop);
-			philo->args->end_game = true;
-			pthread_mutex_unlock(&philo->args->lock_meals_stop);
-			return (NULL);
-		}
-		usleep(50);
-	}
-	return (NULL);
+        if (philo->args->n_meals > 0 && total_meals >= (philo->args->n_meals * philo->args->n_philos))
+        {
+            pthread_mutex_lock(&philo->args->lock_meals_stop);
+            philo->args->end_game = true;
+            pthread_mutex_unlock(&philo->args->lock_meals_stop);
+        }
+        usleep(50);
+    }
+    return (NULL);
 }
+
 
 void	*routine(void *args)
 {
-	t_philo	*philo;
+    t_philo	*philo = (t_philo *)args;
 
-	philo = (t_philo *)args;
-	pthread_create(&philo->death_check, NULL, check_death, philo);
-	pthread_create(&philo->meals_check, NULL, check_meals, philo);
-	while (!philo->args->end_game)
-	{
+    pthread_create(&philo->death_check, NULL, check_death, philo);
+    if (philo->args->n_meals > 0)
+    {
+        pthread_create(&philo->meals_check, NULL, check_meals, philo);
+    }
+
+    while (!philo->args->end_game)
+    {
 		if (philo->args->n_philos == 1)
 		{
 			pthread_mutex_lock(philo->left_fork);
 			log_message(philo, "has taken a fork\n");
 			return (NULL);
 		}
-		forks(philo);
-		eat(philo);
-		sleep_think(philo);
-	}
-	return (NULL);
+        forks(philo); // Intenta tomar los tenedores
+        eat(philo);   // Come si logró tomar los tenedores
+        sleep_think(philo); // Duerme y piensa
+    }
+
+    pthread_join(philo->death_check, NULL);
+    if (philo->args->n_meals > 0)
+    {
+        pthread_join(philo->meals_check, NULL);
+    }
+
+    return (NULL);
 }
+
 
 void	wait_threads(t_philo *philos)
 {

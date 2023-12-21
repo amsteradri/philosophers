@@ -6,49 +6,39 @@
 /*   By: adgutier <adgutier@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 17:31:28 by adgutier          #+#    #+#             */
-/*   Updated: 2023/07/15 17:31:28 by adgutier         ###   ########.fr       */
+/*   Updated: 2023/12/21 12:58:17 by adgutier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static bool	ft_isspace(char c)
-{
-	if (c == ' ' || c == '\f' || c == '\n'
-		|| c == '\r' || c == '\t' || c == '\v')
-	{
-		return (true);
-	}
-	return (false);
-}
-
 int	ft_atoi(const char *str)
 {
-	int			i;
-	int			sig;
-	long long	num;
+	int					p;
+	int					n;
+	unsigned int		res;
 
-	i = 0;
-	sig = 1;
-	num = 0;
-	while (ft_isspace(str[i]))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
+	p = 0;
+	n = 1;
+	res = 0;
+	while ((str[p] >= 9 && str[p] <= 13) || (str[p] == 32))
+		p++;
+	if (str[p] == '+' || str[p] == '-')
 	{
-		if (str[i] == '-')
-			sig *= -1;
-		i++;
+		if (str[p] == '-')
+			n = n * -1;
+		p++;
 	}
-	while (str[i] >= '0' && str[i] <= '9')
+	while (str[p] >= '0' && str[p] <= '9')
 	{
-		if (num * sig > INT_MAX)
-			return (-1);
-		if (num * sig < INT_MIN)
-			return (0);
-		num = (num * 10) + (str[i] - '0');
-		i++;
+		res = (str[p] - '0') + (res * 10);
+		p++;
 	}
-	return (num * sig);
+	if (res > 2147483648 && n == -1)
+		return (0);
+	if (res > 2147483647 && n == 1)
+		return (-1);
+	return (res * n);
 }
 
 void init_struct(t_args *args)
@@ -86,11 +76,18 @@ void parse_args(int argc, char **argv, t_args *args)
 	}
 }
 
+
+// while true; do ./philo 5 800 200 200 7 | grep eating | wc -l;  done
 int main(int argc, char **argv)
 {
 	t_args args;
 	t_philo *philos;
 
+	if(argc < 5)
+	{
+		printf("Error: incomplete arguments");
+		exit(0);
+	}
 	init_struct(&args);
 	//printf("ARGSSSSS%d\n", argc);
     parse_args(argc, argv, &args);
@@ -102,10 +99,4 @@ int main(int argc, char **argv)
 	wait_threads(philos);
 	free_destroy_end(philos, &args);
 	return(0);
-	// printf("fILOSOFOS:%d\n", args.n_philos);
-	// printf("T_MUERTE:%lld\n", args.time_to_die);
-	// printf("T_COMER:%lld\n", args.time_to_eat);
-	// printf("T_DORMIR:%lld\n", args.time_to_sleep);
-	// printf("T_DEBE_COMER:%d\n", args.n_meals);
-
 }
