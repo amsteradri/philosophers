@@ -6,32 +6,53 @@
 /*   By: adgutier <adgutier@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:48:58 by adgutier          #+#    #+#             */
-/*   Updated: 2023/12/21 13:14:44 by adgutier         ###   ########.fr       */
+/*   Updated: 2023/12/21 15:52:18 by adgutier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long long	get_time(void)
-{
-	static struct timeval		unix_clock;
-	struct timeval				current_time;
+// long long	get_time(void)
+// {
+// 	static struct timeval		unix_clock;
+// 	struct timeval				current_time;
 
-	if (unix_clock.tv_sec == 0 && unix_clock.tv_usec == 0)
+// 	if (unix_clock.tv_sec == 0 && unix_clock.tv_usec == 0)
+// 	{
+// 		if (gettimeofday(&unix_clock, NULL) == -1)
+// 		{
+// 			printf("Error getting time of day\n");
+// 			return (0);
+// 		}
+// 	}
+// 	if (gettimeofday(&current_time, NULL) == -1)
+// 	{
+// 		printf("Error getting time of day\n");
+// 		return (0);
+// 	}
+// 	return (((current_time.tv_sec - unix_clock.tv_sec) * 1000) + \
+// 	((current_time.tv_usec - unix_clock.tv_usec) / 1000));
+// }
+
+size_t	get_time(void)
+{
+	struct timeval	t;
+
+	gettimeofday(&t, NULL);
+	return ((t.tv_sec * 1000) + (t.tv_usec / 1000));
+}
+
+void	tempo(t_philo *philo, size_t t_slp)
+{
+	size_t	t;
+
+	t = get_time();
+	while (philo->args->end_game == 0)
 	{
-		if (gettimeofday(&unix_clock, NULL) == -1)
-		{
-			printf("Error getting time of day\n");
-			return (0);
-		}
+		if (get_time() - t > t_slp)
+			break ;
+		usleep(100);
 	}
-	if (gettimeofday(&current_time, NULL) == -1)
-	{
-		printf("Error getting time of day\n");
-		return (0);
-	}
-	return (((current_time.tv_sec - unix_clock.tv_sec) * 1000) + \
-	((current_time.tv_usec - unix_clock.tv_usec) / 1000));
 }
 
 void init_forks(t_args *args)
@@ -75,7 +96,7 @@ void	log_message(t_philo *philo, char *str)
 	if (philo->args->end_game)
 		return ;
 	pthread_mutex_lock(&philo->args->lock_print);
-	printf("%lld philo[%d] %s", get_time(), philo->id, str);
+	printf("%zu philo[%d] %s", get_time(), philo->id, str);
 	pthread_mutex_unlock(&philo->args->lock_print);
 }
 
@@ -86,16 +107,17 @@ void	*check_death(void *args)
 	philo = (t_philo *)args;
 	while (!philo->args->end_game)
 	{
-		if ((get_time() - philo->last_meal_time) >= philo->args->time_to_die)
+		if ((get_time() - philo->last_meal_time) >= (unsigned long long)philo->args->time_to_die)
 		{
 			pthread_join(philo->death_check, NULL);
 			pthread_mutex_lock(&philo->args->lock_death);
-			log_message(philo, "is dead\n");
 			philo->args->end_game = true;
 			pthread_mutex_unlock(&philo->args->lock_death);
+			usleep(300);
+			log_message(philo, "is dead\n");
 			return (NULL);
 		}
-		usleep(1000);
+		
 	}
 	return (NULL);
 }
@@ -117,7 +139,6 @@ void	*check_meals(void *args)
             philo->args->end_game = true;
             pthread_mutex_unlock(&philo->args->lock_meals_stop);
         }
-        usleep(50);
     }
     return (NULL);
 }
@@ -144,14 +165,8 @@ void	*routine(void *args)
         forks(philo); // Intenta tomar los tenedores
         eat(philo);   // Come si logró tomar los tenedores
         sleep_think(philo); // Duerme y piensa
+		usleep(1100);
     }
-
-    pthread_join(philo->death_check, NULL);
-    if (philo->args->n_meals > 0)
-    {
-        pthread_join(philo->meals_check, NULL);
-    }
-
     return (NULL);
 }
 

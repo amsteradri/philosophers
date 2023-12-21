@@ -6,7 +6,7 @@
 /*   By: adgutier <adgutier@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 17:31:43 by adgutier          #+#    #+#             */
-/*   Updated: 2023/07/15 17:31:43 by adgutier         ###   ########.fr       */
+/*   Updated: 2023/12/21 15:37:10 by adgutier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ void init_struct(t_args *args);
 void parse_args(int argc, char **argv, t_args *args);
 void	init_philos_and_mutexes(t_philo *philos, t_args *args);
 void init_forks(t_args *args);
-long long	get_time(void);
+size_t	get_time(void);
+void	tempo(t_philo *philo, size_t t_slp);
 void	log_message(t_philo *philo, char *str);
 void	*check_death(void *args);
 void	*check_meals(void *args);
