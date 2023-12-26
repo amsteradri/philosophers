@@ -6,7 +6,7 @@
 /*   By: adgutier <adgutier@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:48:58 by adgutier          #+#    #+#             */
-/*   Updated: 2023/12/26 12:31:19 by adgutier         ###   ########.fr       */
+/*   Updated: 2023/12/26 13:27:21 by adgutier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void	*check_death(void *args)
 			pthread_mutex_unlock(&philo->args->lock_death);
 			return (NULL);
 		}
-		tempo(philo, 2);
+		usleep(300);
 	}
 	return (NULL);
 }
@@ -138,7 +138,7 @@ void	*check_meals(void *args)
             philo->args->end_game = true;
             pthread_mutex_unlock(&philo->args->lock_meals_stop);
         }
-        tempo(philo, 2);
+        usleep(300);
     }
     return (NULL);
 }
