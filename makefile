@@ -6,7 +6,7 @@
 #    By: adgutier <adgutier@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/15 17:33:47 by adgutier          #+#    #+#              #
-#    Updated: 2023/12/21 12:44:23 by adgutier         ###   ########.fr        #
+#    Updated: 2023/12/26 13:02:50 by adgutier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ OBJS			= $(SRCS:.c=.o)
 
 CC				= gcc
 
-CFLAGS			= -Wall -Wextra -Werror -pthread
+CFLAGS			= -Wall -Wextra -Werror -pthread 
 
 all: $(NAME)
 
