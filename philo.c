@@ -6,7 +6,7 @@
 /*   By: adgutier <adgutier@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 17:31:28 by adgutier          #+#    #+#             */
-/*   Updated: 2023/12/26 13:44:27 by adgutier         ###   ########.fr       */
+/*   Updated: 2023/12/26 13:58:39 by adgutier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int	ft_atoi(const char *str)
 {
-	int					p;
-	int					n;
-	unsigned int		res;
+	int				p;
+	int				n;
+	unsigned int	res;
 
 	p = 0;
 	n = 1;
@@ -41,7 +41,7 @@ int	ft_atoi(const char *str)
 	return (res * n);
 }
 
-void init_struct(t_args *args)
+void	init_struct(t_args *args)
 {
 	args->n_philos = 0;
 	args->time_to_die = 0;
@@ -51,15 +51,14 @@ void init_struct(t_args *args)
 	args->n_meals_eaten = 0;
 }
 
-void parse_args(int argc, char **argv, t_args *args)
+void	parse_args(int argc, char **argv, t_args *args)
 {
-
 	args->n_philos = ft_atoi(argv[1]);
 	args->time_to_die = ft_atoi(argv[2]);
 	args->time_to_eat = ft_atoi(argv[3]);
 	args->time_to_sleep = ft_atoi(argv[4]);
 	args->end_game = false;
-	if(argc == 6)
+	if (argc == 6)
 	{
 		args->n_meals = ft_atoi(argv[5]);
 		if (args->n_meals <= 0)
@@ -68,7 +67,7 @@ void parse_args(int argc, char **argv, t_args *args)
 			exit(0);
 		}
 	}
-	if (argc < 5 || args->n_philos <= 0 || args->time_to_die <= 0 \
+	if (argc < 5 || args->n_philos <= 0 || args->time_to_die <= 0
 		|| args->time_to_sleep <= 0 || args->time_to_eat <= 0)
 	{
 		printf("Invalid arguments\n");
@@ -76,21 +75,19 @@ void parse_args(int argc, char **argv, t_args *args)
 	}
 }
 
-
 // while true; do ./philo 5 800 200 200 7 | grep eating | wc -l;  done
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	t_args args;
-	t_philo *philos;
+	t_args	args;
+	t_philo	*philos;
 
-	if(argc < 5)
+	if (argc < 5)
 	{
 		printf("Error: incomplete arguments");
 		exit(0);
 	}
 	init_struct(&args);
-	//printf("ARGSSSSS%d\n", argc);
-    parse_args(argc, argv, &args);
+	parse_args(argc, argv, &args);
 	philos = malloc(sizeof(t_philo) * args.n_philos);
 	if (!philos)
 		return (0);
@@ -98,5 +95,5 @@ int main(int argc, char **argv)
 	init_philos_and_mutexes(philos, &args);
 	wait_threads(philos);
 	free_destroy_end(philos, &args);
-	return(0);
+	return (0);
 }

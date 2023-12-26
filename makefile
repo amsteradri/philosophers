@@ -6,19 +6,19 @@
 #    By: adgutier <adgutier@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/15 17:33:47 by adgutier          #+#    #+#              #
-#    Updated: 2023/12/26 13:02:50 by adgutier         ###   ########.fr        #
+#    Updated: 2023/12/26 14:09:16 by adgutier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			= philo
 
-SRCS			= philo.c forks.c eat_sleep_think.c
+SRCS			= philo.c forks.c eat_sleep_think.c forks2.c routine.c
 
 OBJS			= $(SRCS:.c=.o)
 
 CC				= gcc
 
-CFLAGS			= -Wall -Wextra -Werror -pthread 
+CFLAGS			= -Wall -Wextra -Werror  -fsanitize=thread -g -pthread 
 
 all: $(NAME)
 
