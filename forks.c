@@ -6,18 +6,32 @@
 /*   By: adgutier <adgutier@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:48:58 by adgutier          #+#    #+#             */
-/*   Updated: 2023/12/26 14:09:51 by adgutier         ###   ########.fr       */
+/*   Updated: 2024/02/08 10:10:24 by adgutier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-size_t	get_time(void)
+long long	get_time(void)
 {
-	struct timeval	t;
+	static struct timeval		unix_clock;
+	struct timeval				current_time;
 
-	gettimeofday(&t, NULL);
-	return ((t.tv_sec * 1000) + (t.tv_usec / 1000));
+	if (unix_clock.tv_sec == 0 && unix_clock.tv_usec == 0)
+	{
+		if (gettimeofday(&unix_clock, NULL) == -1)
+		{
+			printf("Error getting time of day\n");
+			return (0);
+		}
+	}
+	if (gettimeofday(&current_time, NULL) == -1)
+	{
+		printf("Error getting time of day\n");
+		return (0);
+	}
+	return (((current_time.tv_sec - unix_clock.tv_sec) * 1000) + \
+	((current_time.tv_usec - unix_clock.tv_usec) / 1000));
 }
 
 void	tempo(t_philo *philo, size_t t_slp)
@@ -74,6 +88,6 @@ void	log_message(t_philo *philo, char *str)
 	if (philo->args->end_game)
 		return ;
 	pthread_mutex_lock(&philo->args->lock_print);
-	printf("%zu philo[%d] %s", get_time(), philo->id, str);
+	printf("%lld philo[%d] %s", get_time(), philo->id, str);
 	pthread_mutex_unlock(&philo->args->lock_print);
 }

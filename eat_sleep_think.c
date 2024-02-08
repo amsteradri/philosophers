@@ -6,7 +6,7 @@
 /*   By: adgutier <adgutier@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 10:52:51 by adgutier          #+#    #+#             */
-/*   Updated: 2023/12/26 13:59:45 by adgutier         ###   ########.fr       */
+/*   Updated: 2024/02/08 10:07:06 by adgutier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	forks(t_philo *philo)
 		}
 		log_message(philo, "has taken a fork\n");
 	}
-	else
+	else if (philo->id % 2 == 0)
 	{
 		pthread_mutex_lock(philo->left_fork);
 		log_message(philo, "has taken a fork\n");
@@ -41,17 +41,16 @@ void	forks(t_philo *philo)
 void	eat(t_philo *philo)
 {
 	unsigned long	start_eating_time;
+	long long int	end_time;
 
 	pthread_mutex_lock(&philo->args->lock_last_meal_time);
 	start_eating_time = get_time();
 	philo->last_meal_time = start_eating_time;
 	pthread_mutex_unlock(&philo->args->lock_last_meal_time);
 	log_message(philo, "is eating\n");
-	while (get_time()
-		- start_eating_time < (unsigned long long)philo->args->time_to_eat)
-	{
-		usleep(1000);
-	}
+	end_time = get_time() + philo->args->time_to_eat;
+	while ((long long)get_time() < end_time)
+		usleep(50);
 	pthread_mutex_lock(&philo->args->lock_meals_eaten);
 	philo->args->n_meals_eaten++;
 	pthread_mutex_unlock(&philo->args->lock_meals_eaten);
@@ -61,7 +60,11 @@ void	eat(t_philo *philo)
 
 void	sleep_think(t_philo *philo)
 {
+	long long int	end_time;
+
+	end_time = get_time() + philo->args->time_to_sleep;
 	log_message(philo, "is sleeping\n");
-	usleep(philo->args->time_to_sleep * 1000);
+	while ((long long)get_time() < end_time)
+		usleep(50);
 	log_message(philo, "is thinking\n");
 }

@@ -6,7 +6,7 @@
 /*   By: adgutier <adgutier@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 14:00:51 by adgutier          #+#    #+#             */
-/*   Updated: 2023/12/26 14:08:50 by adgutier         ###   ########.fr       */
+/*   Updated: 2024/02/08 10:10:45 by adgutier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	*check_death(void *args)
 	{
 		if ((get_time()
 				- philo->last_meal_time)
-			>= (unsigned long long)philo->args->time_to_die)
+			> (long long)philo->args->time_to_die)
 		{
 			pthread_join(philo->death_check, NULL);
 			pthread_mutex_lock(&philo->args->lock_death);
@@ -30,7 +30,7 @@ void	*check_death(void *args)
 			pthread_mutex_unlock(&philo->args->lock_death);
 			return (NULL);
 		}
-		usleep(300);
+		usleep(1000);
 	}
 	return (NULL);
 }
@@ -53,7 +53,7 @@ void	*check_meals(void *args)
 			philo->args->end_game = true;
 			pthread_mutex_unlock(&philo->args->lock_meals_stop);
 		}
-		usleep(300);
+		usleep(1000);
 	}
 	return (NULL);
 }
