@@ -6,7 +6,7 @@
 /*   By: adgutier <adgutier@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 10:52:51 by adgutier          #+#    #+#             */
-/*   Updated: 2024/02/08 10:07:06 by adgutier         ###   ########.fr       */
+/*   Updated: 2024/02/08 10:30:43 by adgutier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ void	eat(t_philo *philo)
 	unsigned long	start_eating_time;
 	long long int	end_time;
 
-	pthread_mutex_lock(&philo->args->lock_last_meal_time);
 	start_eating_time = get_time();
+	pthread_mutex_lock(&philo->args->lock_last_meal_time);
 	philo->last_meal_time = start_eating_time;
 	pthread_mutex_unlock(&philo->args->lock_last_meal_time);
 	log_message(philo, "is eating\n");

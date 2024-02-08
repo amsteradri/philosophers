@@ -6,7 +6,7 @@
 /*   By: adgutier <adgutier@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 17:31:28 by adgutier          #+#    #+#             */
-/*   Updated: 2023/12/26 13:58:39 by adgutier         ###   ########.fr       */
+/*   Updated: 2024/02/08 10:37:59 by adgutier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ void	init_struct(t_args *args)
 
 void	parse_args(int argc, char **argv, t_args *args)
 {
+	args->n_meals = 0;
+	args->n_meals_eaten = 0;
 	args->n_philos = ft_atoi(argv[1]);
 	args->time_to_die = ft_atoi(argv[2]);
 	args->time_to_eat = ft_atoi(argv[3]);
