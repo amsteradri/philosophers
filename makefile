@@ -6,7 +6,7 @@
 #    By: adgutier <adgutier@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/15 17:33:47 by adgutier          #+#    #+#              #
-#    Updated: 2024/02/08 10:17:11 by adgutier         ###   ########.fr        #
+#    Updated: 2024/02/13 11:43:43 by adgutier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ OBJS			= $(SRCS:.c=.o)
 
 CC				= gcc
 
-CFLAGS			= -Wall -Wextra -Werror  -fsanitize=thread -g -pthread 
+CFLAGS			= -Wall -Wextra -Werror -pthread 
 
 all: $(NAME)
 

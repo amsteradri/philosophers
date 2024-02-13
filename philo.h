@@ -6,7 +6,7 @@
 /*   By: adgutier <adgutier@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 17:31:43 by adgutier          #+#    #+#             */
-/*   Updated: 2024/02/08 10:35:35 by adgutier         ###   ########.fr       */
+/*   Updated: 2024/02/13 11:38:10 by adgutier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_args
 	pthread_mutex_t	lock_death;
 	pthread_mutex_t	lock_meals_stop;
 	pthread_mutex_t	lock_meals_eaten;
+	pthread_mutex_t	lock_end_game;
 	pthread_mutex_t	lock_last_meal_time;
 
 	bool			end_game;
@@ -46,7 +47,8 @@ typedef struct s_philo
 {
 	int				id;
 	long long		last_meal_time;
-	pthread_t		*threads;
+	
+	pthread_t		threads;
 	pthread_t		death_check;
 	pthread_t		meals_check;
 
