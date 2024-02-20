@@ -6,7 +6,7 @@
 /*   By: adgutier <adgutier@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:48:58 by adgutier          #+#    #+#             */
-/*   Updated: 2024/02/13 11:40:18 by adgutier         ###   ########.fr       */
+/*   Updated: 2024/02/20 10:28:40 by adgutier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,30 +21,17 @@ long long	get_time(void)
 	{
 		if (gettimeofday(&unix_clock, NULL) == -1)
 		{
-			printf("Error getting time of day\n");
+			printf("Error getting time\n");
 			return (0);
 		}
 	}
 	if (gettimeofday(&current_time, NULL) == -1)
 	{
-		printf("Error getting time of day\n");
+		printf("Error getting time\n");
 		return (0);
 	}
 	return (((current_time.tv_sec - unix_clock.tv_sec) * 1000) + \
 	((current_time.tv_usec - unix_clock.tv_usec) / 1000));
-}
-
-void	tempo(t_philo *philo, size_t t_slp)
-{
-	size_t	t;
-
-	t = get_time();
-	while (philo->args->end_game == 0)
-	{
-		if (get_time() - t > t_slp)
-			break ;
-		usleep(100);
-	}
 }
 
 void	init_forks(t_args *args)
@@ -64,13 +51,13 @@ void	init_philos_and_mutexes(t_philo *philos, t_args *args)
 {
 	int	i;
 
+	i = 0;
 	pthread_mutex_init(&args->lock_print, NULL);
 	pthread_mutex_init(&args->lock_death, NULL);
 	pthread_mutex_init(&args->lock_meals_stop, NULL);
 	pthread_mutex_init(&args->lock_meals_eaten, NULL);
 	pthread_mutex_init(&args->lock_end_game, NULL);
 	pthread_mutex_init(&args->lock_last_meal_time, NULL);
-	i = 0;
 	while (i < args->n_philos)
 	{
 		philos[i].id = i + 1;

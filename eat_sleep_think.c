@@ -6,7 +6,7 @@
 /*   By: adgutier <adgutier@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 10:52:51 by adgutier          #+#    #+#             */
-/*   Updated: 2024/02/13 11:09:04 by adgutier         ###   ########.fr       */
+/*   Updated: 2024/02/20 10:09:25 by adgutier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,14 @@ void	forks(t_philo *philo)
 
 void	eat(t_philo *philo)
 {
-	long long int	end_time;
+	long long int	pass_toeat;
 
 	pthread_mutex_lock(&philo->args->lock_last_meal_time);
 	philo->last_meal_time = get_time();
 	pthread_mutex_unlock(&philo->args->lock_last_meal_time);
 	log_message(philo, "is eating\n");
-	end_time = get_time() + philo->args->time_to_eat;
-	while (get_time() < end_time)
+	pass_toeat = get_time() + philo->args->time_to_eat;
+	while (get_time() < pass_toeat)
 		usleep(200);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
@@ -50,12 +50,11 @@ void	eat(t_philo *philo)
 
 void	sleep_think(t_philo *philo)
 {
-	long long int	end_time;
+	long long int	pass_tosleep;
 
-	end_time = get_time() + philo->args->time_to_sleep;
+	pass_tosleep = get_time() + philo->args->time_to_sleep;
 	log_message(philo, "is sleeping\n");
-
-	while (get_time() < end_time)
+	while (get_time() < pass_tosleep)
 		usleep(200);
 	log_message(philo, "is thinking\n");
 }

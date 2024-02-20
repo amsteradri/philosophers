@@ -6,13 +6,13 @@
 #    By: adgutier <adgutier@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/15 17:33:47 by adgutier          #+#    #+#              #
-#    Updated: 2024/02/13 11:43:43 by adgutier         ###   ########.fr        #
+#    Updated: 2024/02/20 10:55:33 by adgutier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			= philo
 
-SRCS			= philo.c forks.c eat_sleep_think.c forks2.c routine.c
+SRCS			= philo.c forks.c eat_sleep_think.c forks2.c routine.c forks3.c
 
 OBJS			= $(SRCS:.c=.o)
 
