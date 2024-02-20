@@ -6,7 +6,7 @@
 /*   By: adgutier <adgutier@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 17:31:43 by adgutier          #+#    #+#             */
-/*   Updated: 2024/02/20 10:57:33 by adgutier         ###   ########.fr       */
+/*   Updated: 2024/02/20 11:48:55 by adgutier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef struct s_philo
 int					ft_atoi(const char *str);
 void				init_struct(t_args *args);
 void				parse_args(int argc, char **argv, t_args *args);
-void				init_philos_and_mutexes(t_philo *philos, t_args *args);
+void				init_philo_mutex(t_philo *philos, t_args *args);
 void				init_forks(t_args *args);
 long long			get_time(void);
 void				tempo(t_philo *philo, size_t t_slp);

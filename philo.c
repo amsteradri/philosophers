@@ -6,7 +6,7 @@
 /*   By: adgutier <adgutier@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 17:31:28 by adgutier          #+#    #+#             */
-/*   Updated: 2024/02/20 10:28:14 by adgutier         ###   ########.fr       */
+/*   Updated: 2024/02/20 11:49:10 by adgutier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	main(int argc, char **argv)
 	if (!philos)
 		return (0);
 	init_forks(&args);
-	init_philos_and_mutexes(philos, &args);
+	init_philo_mutex(philos, &args);
 	wait_threads(philos);
 	free_destroy_end(philos, &args);
 	return (0);

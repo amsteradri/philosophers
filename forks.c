@@ -6,7 +6,7 @@
 /*   By: adgutier <adgutier@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:48:58 by adgutier          #+#    #+#             */
-/*   Updated: 2024/02/20 10:28:40 by adgutier         ###   ########.fr       */
+/*   Updated: 2024/02/20 11:53:02 by adgutier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,17 +47,22 @@ void	init_forks(t_args *args)
 	}
 }
 
-void	init_philos_and_mutexes(t_philo *philos, t_args *args)
+void	init_mutex(t_args *args)
+{
+	pthread_mutex_init(&args->lock_print, NULL);
+	pthread_mutex_init(&args->lock_death, NULL);
+	pthread_mutex_init(&args->lock_end_game, NULL);
+	pthread_mutex_init(&args->lock_meals_stop, NULL);
+	pthread_mutex_init(&args->lock_meals_eaten, NULL);
+	pthread_mutex_init(&args->lock_last_meal_time, NULL);
+}
+
+void	init_philo_mutex(t_philo *philos, t_args *args)
 {
 	int	i;
 
 	i = 0;
-	pthread_mutex_init(&args->lock_print, NULL);
-	pthread_mutex_init(&args->lock_death, NULL);
-	pthread_mutex_init(&args->lock_meals_stop, NULL);
-	pthread_mutex_init(&args->lock_meals_eaten, NULL);
-	pthread_mutex_init(&args->lock_end_game, NULL);
-	pthread_mutex_init(&args->lock_last_meal_time, NULL);
+	init_mutex(args);
 	while (i < args->n_philos)
 	{
 		philos[i].id = i + 1;
