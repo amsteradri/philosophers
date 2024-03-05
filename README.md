@@ -22,7 +22,7 @@ cd philosophers/philo
 ```bash
 make
 ```
-### 🖥 Uso
+## 🖥 Uso
 
 El programa toma los siguientes argumentos de línea de comandos:
 n_philos: Número de filósofos en la mesa.
