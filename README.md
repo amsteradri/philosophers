@@ -16,7 +16,7 @@ git clone https://github.com/amsteradri/philosophers.git
 ### 📂 Navegar al directorio del proyecto
 
 ```bash
-cd proyecto-filosofos
+cd philosophers/philo
 ```
 ### 🔨 Compilar el código
 ```bash
