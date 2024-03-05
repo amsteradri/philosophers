@@ -1,4 +1,4 @@
-# 📚 Proyecto Filósofos
+# 📚 Proyecto Philosophers
 
 Este proyecto consiste en simular la clásica paradoja de los filósofos comensales utilizando threads y mutexes en C. Los filósofos pasan su vida comiendo, pensando y durmiendo. Para comer, cada filósofo necesita dos tenedores. Sin embargo, los tenedores son compartidos entre los filósofos adyacentes. Esto puede llevar a un problema de interbloqueo si los filósofos toman los tenedores al mismo tiempo. El objetivo del proyecto es implementar un algoritmo que evite el interbloqueo, permitiendo que los filósofos cenen sin riesgo de inanición ni de interbloqueo. 🍽️🤔💤
 
